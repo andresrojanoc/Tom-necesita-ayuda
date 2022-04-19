@@ -3,7 +3,6 @@ import json
 import time
 from websocket import create_connection
 from tqdm import tqdm
-from abc import ABCMeta, abstractstaticmethod
 
 url = "ws://209.126.82.146:8080/"
 
@@ -15,23 +14,6 @@ def isprime(num):
         return True
     except TypeError:
         return "Error in isprime(num): TypeError"
-
-
-class ICommannds(metaclass=ABCMeta):
-
-    @abstractstaticmethod
-    def download_files(self):
-        raise AttributeError("Please implement this method")
-
-    @abstractstaticmethod
-    def compile_contents(self):
-        raise AttributeError("Please implement this method")
-
-    @abstractstaticmethod
-    def look_structure(self):
-        raise AttributeError("Please implement this method")
-
-
 
 class ClientDownloadFiles:
 
@@ -46,7 +28,6 @@ class ClientDownloadFiles:
             dictionary_downloaded[a] = b
             file_numbers += 1
         return dictionary_downloaded
-
 
 class ClientCompileContents:
 
@@ -100,7 +81,7 @@ class Client(ClientDownloadFiles,ClientCompileContents,ClientLookStructure):
         self.blocks = 100
 
 
-class Main(ICommannds):
+class Main:
 
     url = "ws://209.126.82.146:8080/"
 
@@ -146,10 +127,11 @@ class Main(ICommannds):
                     final_result.append(write_line)
                     block_ouput.append(write_line)
                 block_local = 0
-                print(f"\nIteration: {iteration}")
+                print(f"\nIteration: {iteration+1}")
                 for block in block_ouput:
                     block_local += 1
                     print(f"block{block_local}: {block}")
+                iteration += 1
 
         except KeyboardInterrupt:
             client.ws.close()
